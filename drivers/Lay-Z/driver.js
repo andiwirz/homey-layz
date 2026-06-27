@@ -297,6 +297,11 @@ class SpaDriver extends Homey.Driver {
       await device.setStoreValue('password',  data.password);
 
       device._userToken = auth.token;
+      device.baseUrl    = auth.baseUrl;
+      device.headers    = {
+        'X-Gizwits-Application-Id': auth.appId,
+        'Content-Type': 'application/json; charset=UTF-8',
+      };
       device.setAvailable().catch(err => this.log('Repair: setAvailable failed:', err.message));
 
       this.log('Device re-login successful for DID:', device.getData().did);

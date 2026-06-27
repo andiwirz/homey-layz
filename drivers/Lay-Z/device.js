@@ -299,11 +299,12 @@ class SpaDevice extends Homey.Device {
       }
     }
 
-    // State tracking for rising-edge triggers and energy accumulation
-    this._prevTempReached = false;
-    this._prevAlarmActive = false;
-    this._energyLastTs    = null;
-    this._energyLastWatts = 0;
+    this._prevTempReached = undefined;
+    this._prevAlarmActive = undefined;
+    this._prevHeatingOn   = undefined;
+    this._prevFilterOn    = undefined;
+    this._energyLastTs    = Date.now();
+    this._energyLastWatts = this.getCapabilityValue('measure_power') ?? 0;
     this._pollFailCount   = 0;
 
     // *** Common capabilities (shared by all models) ****
@@ -638,7 +639,7 @@ class SpaDevice extends Homey.Device {
     }
 
     try {
-      const response = await axios({ method, url, data, headers });
+      const response = await axios({ method, url, data, headers, timeout: 10000 });
 
       // Log response status and body
       try {
@@ -687,7 +688,8 @@ class SpaDevice extends Homey.Device {
     const token = await this._getValidToken();
     const body = this.adapter.encode(key, value);
     this.log(`Control payload (${key}):`, JSON.stringify(body));
-    await this.makeAxiosCall('post', `${this.baseUrl}/app/control/${this.getData().did}`, body, token);
+    const result = await this.makeAxiosCall('post', `${this.baseUrl}/app/control/${this.getData().did}`, body, token);
+    if (result === null) throw new Error(this.homey.__('error.control_failed') ?? 'Control command failed');
     await this.updateDeviceStatus();
   }
 
@@ -781,14 +783,14 @@ class SpaDevice extends Homey.Device {
     const hydrojet   = isHydro && n.jetOn;
     const heating    = n.heatOn && !n.heatReached;
 
-    if (hydrojet && airjetHigh) return this.getSetting('power_hydrojet_airjet_high_w');
-    if (hydrojet && airjetLow)  return this.getSetting('power_hydrojet_airjet_low_w');
-    if (hydrojet)               return this.getSetting('power_hydrojet_w');
-    if (airjetHigh)             return this.getSetting('power_airjet_high_w');
-    if (airjetLow)              return this.getSetting('power_airjet_low_w');
-    if (heating)                return this.getSetting('power_heating_w');
-    if (n.filterOn)             return this.getSetting('power_filter_w');
-    return this.getSetting('power_standby_w') ?? 0;
+    if (hydrojet && airjetHigh) return Number(this.getSetting('power_hydrojet_airjet_high_w')) || 0;
+    if (hydrojet && airjetLow)  return Number(this.getSetting('power_hydrojet_airjet_low_w')) || 0;
+    if (hydrojet)               return Number(this.getSetting('power_hydrojet_w')) || 0;
+    if (airjetHigh)             return Number(this.getSetting('power_airjet_high_w')) || 0;
+    if (airjetLow)              return Number(this.getSetting('power_airjet_low_w')) || 0;
+    if (heating)                return Number(this.getSetting('power_heating_w')) || 0;
+    if (n.filterOn)             return Number(this.getSetting('power_filter_w')) || 0;
+    return Number(this.getSetting('power_standby_w')) || 0;
   }
 
   _updateDebugLabels(attr, n, errorMsg) {
@@ -822,18 +824,20 @@ class SpaDevice extends Homey.Device {
 
   _updateEnergyApproximation(watts) {
     const now = Date.now();
-    if (this._energyLastTs !== null) {
-      const elapsedHours = (now - this._energyLastTs) / 3_600_000;
-      const deltaKwh = (this._energyLastWatts / 1000) * elapsedHours;
-      const current = this.getCapabilityValue('meter_power') ?? 0;
-      this.safeSetCapabilityValue('meter_power', current + deltaKwh);
-    }
+    const elapsedHours = (now - this._energyLastTs) / 3_600_000;
+    const deltaKwh     = (this._energyLastWatts / 1000) * elapsedHours;
+    const totalKwh     = (this.getCapabilityValue('meter_power') ?? 0) + deltaKwh;
+    this.safeSetCapabilityValue('meter_power', Math.round(totalKwh * 10000) / 10000);
     this._energyLastTs    = now;
     this._energyLastWatts = watts;
   }
 
+  async onUninit() {
+    if (this.updateInterval) clearInterval(this.updateInterval);
+  }
+
   async onDeleted() {
-    clearInterval(this.updateInterval);
+    if (this.updateInterval) clearInterval(this.updateInterval);
     this.log('SpaDevice has been deleted');
   }
 

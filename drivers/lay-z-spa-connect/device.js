@@ -27,8 +27,8 @@ class LaZSpaConnectDevice extends Homey.Device {
     this._pollFailCount  = 0;
     this._authPromise    = null;
 
-    this._prevTempReached = false;
-    this._prevAlarmActive = false;
+    this._prevTempReached = undefined;
+    this._prevAlarmActive = undefined;
 
     this._energyLastTs    = Date.now();
     this._energyLastWatts = this.getCapabilityValue('measure_power') ?? 0;
@@ -241,7 +241,7 @@ class LaZSpaConnectDevice extends Homey.Device {
       }
       await this._setCapability('bestway_temp_reached', tempReached);
 
-      if (tempReached && !this._prevTempReached) {
+      if (this._prevTempReached !== undefined && tempReached && !this._prevTempReached) {
         this._fireTriggerTempReached(state.water_temperature ?? 0);
       }
       this._prevTempReached = tempReached;
@@ -260,11 +260,15 @@ class LaZSpaConnectDevice extends Homey.Device {
         if (hasErrorCode) {
           const raw     = String(errorCode).replace(/^E/i, '');
           const codeNum = parseInt(raw, 10);
-          const eKey    = `E${String(codeNum).padStart(2, '0')}`;
-          const entry   = ERROR_DESCRIPTIONS[eKey];
           const lang    = this.homey.i18n.getLanguage();
-          const desc    = entry ? (entry[lang] ?? entry.en) : String(errorCode);
-          await this._setCapability('bestway_error_message', `${eKey}: ${desc}`);
+          if (Number.isFinite(codeNum) && codeNum > 0) {
+            const eKey  = `E${String(codeNum).padStart(2, '0')}`;
+            const entry = ERROR_DESCRIPTIONS[eKey];
+            const desc  = entry ? (entry[lang] ?? entry.en) : String(errorCode);
+            await this._setCapability('bestway_error_message', `${eKey}: ${desc}`);
+          } else {
+            await this._setCapability('bestway_error_message', String(errorCode));
+          }
         } else {
           // warning flag active but no specific error code from device
           await this._setCapability('bestway_error_message', 'Device warning (no error code)');
@@ -273,7 +277,7 @@ class LaZSpaConnectDevice extends Homey.Device {
         await this._setCapability('bestway_error_message', '–');
       }
 
-      if (hasError && !this._prevAlarmActive) {
+      if (this._prevAlarmActive !== undefined && hasError && !this._prevAlarmActive) {
         const errorMsg = hasErrorCode ? String(errorCode) : String(state.warning);
         this._fireTriggerError(errorMsg);
       }
