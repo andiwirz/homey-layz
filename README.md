@@ -2,7 +2,7 @@
 
 Control your **Bestway Lay-Z-Spa** (Airjet / Hydrojet Pro) and **Bestway Pool Filter Pump** directly from Homey. Monitor water temperature, control heating, jets and filter pump, and automate everything with Homey Flow.
 
-> **App version:** 1.3.10 · **Homey SDK:** 3 · **Platform:** Homey Pro (≥ 12.0)
+> **App version:** 1.3.11 · **Homey SDK:** 3 · **Platform:** Homey Pro (≥ 12.0)
 
 ---
 
@@ -194,6 +194,9 @@ If this app saves you time or adds value to your smart home, consider a small do
 ---
 
 ## Changelog
+
+### 1.3.11
+- Improved: extended App Store search tags in English and German — `pool`, `pool filter`, `pump`, `whirlpool`, `inflatable`, `outdoor`, `wellness` and more for better discoverability
 
 ### 1.3.10
 - Added: flow triggers **"Heating turned on"** and **"Heating turned off"** for both drivers
