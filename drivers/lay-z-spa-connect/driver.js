@@ -90,6 +90,18 @@ class LaZSpaConnectDriver extends Homey.Driver {
     this.homey.flow.getActionCard('spa_set_hydrojet')
       .registerRunListener(runSpa('onoff.hydrojet', 'setHydrojet'));
 
+    // **** New driver-level spa action cards (device-specific) ****
+    const runDevice = (method) => async ({ device, onoff }) => {
+      const val = onoff === 'true';
+      return device[method](val);
+    };
+
+    this.homey.flow.getActionCard('spa_heating').registerRunListener(runDevice('setHeating'));
+    this.homey.flow.getActionCard('spa_filter').registerRunListener(runDevice('setFilter'));
+    this.homey.flow.getActionCard('spa_airjet_low').registerRunListener(runDevice('setAirjetLow'));
+    this.homey.flow.getActionCard('spa_airjet_high').registerRunListener(runDevice('setAirjetHigh'));
+    this.homey.flow.getActionCard('spa_hydrojet').registerRunListener(runDevice('setHydrojet'));
+
     // Filter pump conditions — cover Connect devices (pump_onoff not present; use onoff.filter)
     this.homey.flow.getConditionCard('filter_pump_is_on')
       .registerRunListener(async ({ device }) => {

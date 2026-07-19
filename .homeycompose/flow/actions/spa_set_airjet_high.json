@@ -1,5 +1,6 @@
 {
   "id": "spa_set_airjet_high",
+  "deprecated": true,
   "title": {
     "en": "Turn AirJet High on or off",
     "de": "AirJet High ein- oder ausschalten"

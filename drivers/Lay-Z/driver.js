@@ -83,6 +83,18 @@ class SpaDriver extends Homey.Driver {
     this.homey.flow.getActionCard('spa_set_hydrojet')
       .registerRunListener(runSpa('onoff.hydrojet', 'setHydrojet'));
 
+    // **** New driver-level spa action cards (device-specific) ****
+    const runDevice = (method) => async ({ device, onoff }) => {
+      const val = onoff === 'true';
+      return device[method](val);
+    };
+
+    this.homey.flow.getActionCard('spa_heating').registerRunListener(runDevice('setHeating'));
+    this.homey.flow.getActionCard('spa_filter').registerRunListener(runDevice('setFilter'));
+    this.homey.flow.getActionCard('spa_airjet_low').registerRunListener(runDevice('setAirjetLow'));
+    this.homey.flow.getActionCard('spa_airjet_high').registerRunListener(runDevice('setAirjetHigh'));
+    this.homey.flow.getActionCard('spa_hydrojet').registerRunListener(runDevice('setHydrojet'));
+
     // **** Flow cards: filter pump (actions + conditions) ****
     try {
       // Actions: these IDs must match your .homeycompose files

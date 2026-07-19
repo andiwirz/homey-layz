@@ -1,0 +1,42 @@
+{
+  "id": "spa_filter",
+  "title": {
+    "en": "Turn filter on or off",
+    "de": "Filter ein- oder ausschalten"
+  },
+  "titleFormatted": {
+    "en": "Turn filter [[onoff]]",
+    "de": "Filter [[onoff]] schalten"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=Lay-Z|driver_id=lay-z-spa-connect"
+    },
+    {
+      "name": "onoff",
+      "type": "dropdown",
+      "title": {
+        "en": "State",
+        "de": "Zustand"
+      },
+      "values": [
+        {
+          "id": "true",
+          "label": {
+            "en": "on",
+            "de": "ein"
+          }
+        },
+        {
+          "id": "false",
+          "label": {
+            "en": "off",
+            "de": "aus"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 {
   "id": "spa_set_airjet_low",
+  "deprecated": true,
   "title": {
     "en": "Turn AirJet Low on or off",
     "de": "AirJet Low ein- oder ausschalten"

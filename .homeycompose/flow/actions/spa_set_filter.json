@@ -1,5 +1,6 @@
 {
   "id": "spa_set_filter",
+  "deprecated": true,
   "title": {
     "en": "Turn filter on or off",
     "de": "Filter ein- oder ausschalten"

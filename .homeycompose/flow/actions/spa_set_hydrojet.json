@@ -1,5 +1,6 @@
 {
   "id": "spa_set_hydrojet",
+  "deprecated": true,
   "title": {
     "en": "Turn HydroJet on or off",
     "de": "HydroJet ein- oder ausschalten"

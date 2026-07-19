@@ -1,4 +1,8 @@
 {
+  "1.3.12": {
+    "en": "Improved: 5 new device-level action cards added (heating, filter, AirJet Low/High, HydroJet) — cards now appear directly under the selected device in the flow editor. Old app-level cards marked as deprecated and still work in existing flows.",
+    "de": "Verbessert: 5 neue gerätespezifische Aktionskarten hinzugefügt (Heizung, Filter, AirJet Low/High, HydroJet) — Karten erscheinen jetzt direkt beim gewählten Gerät im Flow-Editor. Alte App-Karten als veraltet markiert und funktionieren in bestehenden Flows weiterhin."
+  },
   "1.3.11": {
     "en": "Improved: extended App Store search tags in English and German — includes pool, pool filter, pump, whirlpool, inflatable, outdoor, wellness and more for better discoverability.",
     "de": "Verbessert: App-Store-Suchtags auf Englisch und Deutsch erweitert — unter anderem Pool, Poolfilter, Pumpe, Whirlpool, aufblasbarer Whirlpool, Outdoor und Wellness für bessere Auffindbarkeit."

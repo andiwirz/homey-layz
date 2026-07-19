@@ -1,5 +1,6 @@
 {
   "id": "spa_set_heating",
+  "deprecated": true,
   "title": {
     "en": "Turn heating on or off",
     "de": "Heizung ein- oder ausschalten"
