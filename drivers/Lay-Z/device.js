@@ -401,20 +401,18 @@ class SpaDevice extends Homey.Device {
         waveLevel: n.waveLevel, jetOn: n.jetOn
       });
 
-      // Update UI units for target temperature
-      const units = n.unit === 'F' ? '°F' : '°C';
-      const options = {
-        units: { en: units, no: units },
-        min: units === '°F' ? 68 : 20,
-        max: units === '°F' ? 104 : 40,
-        step: 1,
-        decimals: 0,
-      };
-      await this.setCapabilityOptions('target_temperature', options);
+      // Always display in °C — convert Fahrenheit values from device if needed
+      this._deviceUnit = n.unit; // remember for onCapabilityTargetTemperature
+      const toC = (v) => (n.unit === 'F' && typeof v === 'number') ? Math.round((v - 32) * 5 / 9 * 10) / 10 : v;
+      const allLangs = (u) => ({ en: u, no: u, cs: u, nl: u, de: u, da: u, sv: u, it: u, fr: u, ru: u, pl: u });
+      await this.setCapabilityOptions('target_temperature', {
+        units: allLangs('°C'),
+        min: 20, max: 40, step: 1, decimals: 0,
+      });
 
       // Update common capabilities (read)
-      await this.safeSetCapabilityValue('target_temperature', n.tempSet);
-      await this.safeSetCapabilityValue('measure_temperature', n.tempNow);
+      await this.safeSetCapabilityValue('target_temperature', toC(n.tempSet));
+      await this.safeSetCapabilityValue('measure_temperature', toC(n.tempNow));
 
       // Fire Flow triggers when heating state changes
       const prevHeating = this._prevHeatingOn;
@@ -430,7 +428,7 @@ class SpaDevice extends Homey.Device {
       }
       this._prevHeatingOn = n.heatOn;
 
-      await this.safeSetCapabilityValue('temp_now', n.tempNow);
+      await this.safeSetCapabilityValue('temp_now', toC(n.tempNow));
 
       await this.safeSetCapabilityValue('onoff', n.powerOn);
       // Fire Flow triggers when filter state changes
@@ -694,7 +692,9 @@ class SpaDevice extends Homey.Device {
   }
 
   async onCapabilityTargetTemperature(value) {
-    try { await this._sendControl('tempSet', value); }
+    // value is always in °C from Homey; convert to °F if device operates in Fahrenheit
+    const deviceValue = this._deviceUnit === 'F' ? Math.round(value * 9 / 5 + 32) : value;
+    try { await this._sendControl('tempSet', deviceValue); }
     catch (error) { this.error('Failed to set target temperature', error); }
   }
 

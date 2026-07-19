@@ -1,4 +1,8 @@
 {
+  "1.3.13": {
+    "en": "Fixed: temperature always displayed and set in °C in Homey, even when the physical device is configured in Fahrenheit — values are converted transparently at the driver boundary.",
+    "de": "Behoben: Temperatur wird in Homey jetzt immer in °C angezeigt und gesetzt, auch wenn das Gerät auf Fahrenheit eingestellt ist — die Umrechnung erfolgt automatisch im Treiber."
+  },
   "1.3.12": {
     "en": "Improved: 5 new device-level action cards added (heating, filter, AirJet Low/High, HydroJet) — cards now appear directly under the selected device in the flow editor. Old app-level cards marked as deprecated and still work in existing flows.",
     "de": "Verbessert: 5 neue gerätespezifische Aktionskarten hinzugefügt (Heizung, Filter, AirJet Low/High, HydroJet) — Karten erscheinen jetzt direkt beim gewählten Gerät im Flow-Editor. Alte App-Karten als veraltet markiert und funktionieren in bestehenden Flows weiterhin."
