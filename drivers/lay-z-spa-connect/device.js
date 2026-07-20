@@ -5,8 +5,8 @@ const { BestwaySmarthubClient, SmarthubError } = require('../../lib/BestwaySmart
 
 const DEFAULT_POLL_INTERVAL_S = 60;
 const MAX_POLL_INTERVAL_S     = 300;
-const CONTROL_MAX_ATTEMPTS    = 2;
-const CONTROL_RETRY_DELAY_MS  = 2000;
+const CONTROL_MAX_ATTEMPTS    = 1;
+const CONTROL_RETRY_DELAY_MS  = 0;
 
 const ERROR_DESCRIPTIONS = {
   E01: { en: 'Flow sensor error (paddle stuck)',      de: 'Durchflusssensor-Fehler (Paddel blockiert)' },
@@ -228,20 +228,30 @@ class LaZSpaConnectDevice extends Homey.Device {
       }
 
       // Priority: temp_reach_state → heater_state=4 → infer from temperatures.
-      let tempReached;
+      let tempReachedRaw;
       if (state.temp_reach_state !== undefined) {
-        tempReached = state.temp_reach_state === 1;
+        tempReachedRaw = state.temp_reach_state === 1;
       } else if (state.heater_state === 4) {
-        tempReached = true;
+        tempReachedRaw = true;
       } else {
-        tempReached = typeof state.water_temperature === 'number'
+        tempReachedRaw = typeof state.water_temperature === 'number'
           && typeof state.temperature_setting === 'number'
           && state.power_state === 1
           && state.water_temperature >= state.temperature_setting;
       }
+
+      // Hysteresis: once reached, hold "reached" until temp drops ≥1°C below target.
+      // Prevents oscillation when temperature hovers at the setpoint boundary.
+      const prevStable = this._prevTempReached;
+      const hysteresisActive = (prevStable === true)
+        && typeof state.water_temperature === 'number'
+        && typeof state.temperature_setting === 'number'
+        && state.water_temperature >= state.temperature_setting - 1.0;
+      const tempReached = tempReachedRaw || hysteresisActive;
+
       await this._setCapability('bestway_temp_reached', tempReached);
 
-      if (this._prevTempReached !== undefined && tempReached && !this._prevTempReached) {
+      if (prevStable !== undefined && tempReached && !prevStable) {
         this._fireTriggerTempReached(state.water_temperature ?? 0);
       }
       this._prevTempReached = tempReached;
@@ -291,7 +301,7 @@ class LaZSpaConnectDevice extends Homey.Device {
       this._updateDebugSettings(state);
       this._updateEnergyApproximation();
       this._pollFailCount = 0;
-      this.setAvailable().catch(err => this.log('setAvailable failed:', err.message));
+      if (!this.getAvailable()) this.setAvailable().catch(err => this.log('setAvailable failed:', err.message));
 
     } catch (err) {
       const code = err instanceof SmarthubError ? err.code : null;

@@ -3,14 +3,6 @@
 const Homey = require('homey');
 const { BestwaySmarthubClient } = require('../../lib/BestwaySmarthubClient');
 
-function _getAllSpaDevices(homey) {
-  const devices = [];
-  for (const id of ['Lay-Z', 'lay-z-spa-connect']) {
-    try { devices.push(...homey.drivers.getDriver(id).getDevices()); } catch (_) {}
-  }
-  return devices;
-}
-
 class LaZSpaConnectDriver extends Homey.Driver {
 
   async onInit() {
@@ -22,108 +14,8 @@ class LaZSpaConnectDriver extends Homey.Driver {
     this._triggerFilterPumpChanged   = this.homey.flow.getDeviceTriggerCard('filter_pump_changed');
     this._triggerFilterPumpTurnedOn  = this.homey.flow.getDeviceTriggerCard('filter_pump_turned_on');
     this._triggerFilterPumpTurnedOff = this.homey.flow.getDeviceTriggerCard('filter_pump_turned_off');
-
-    // Registering conditions here ensures they work for Connect devices even if the
-    // V01 driver initialises after this one. The last registration always wins safely.
-
-    this.homey.flow.getConditionCard('spa_error_active')
-      .registerRunListener((args) =>
-        args.device.getCapabilityValue('alarm_generic') === true,
-      );
-
-    this.homey.flow.getConditionCard('spa_temp_above')
-      .registerRunListener((args) => {
-        const current = args.device.getCapabilityValue('measure_temperature');
-        return typeof current === 'number' && current > args.temperature;
-      });
-
-    this.homey.flow.getConditionCard('spa_temp_below')
-      .registerRunListener((args) => {
-        const current = args.device.getCapabilityValue('measure_temperature');
-        return typeof current === 'number' && current < args.temperature;
-      });
-
-    this.homey.flow.getConditionCard('spa_temp_reached_condition')
-      .registerRunListener((args) =>
-        args.device.getCapabilityValue('bestway_temp_reached') === true,
-      );
-
-    this.homey.flow.getConditionCard('spa_airjet_active')
-      .registerRunListener((args) => {
-        const d = args.device;
-        // Connect devices use onoff.airjet_low/high; Lay-Z devices use airjet_low/high or msg_onoff
-        return d.getCapabilityValue('onoff.airjet_low') === true ||
-               d.getCapabilityValue('onoff.airjet_high') === true ||
-               d.getCapabilityValue('airjet_low') === true ||
-               d.getCapabilityValue('airjet_high') === true ||
-               d.getCapabilityValue('msg_onoff') === true;
-      });
-
-    this.homey.flow.getConditionCard('spa_locked')
-      .registerRunListener((args) =>
-        args.device.getCapabilityValue('bestway_locked') === true,
-      );
-
-    const runSpa = (cap, method) => async (args) => {
-      const val = args.onoff === 'true';
-      for (const d of _getAllSpaDevices(this.homey)) {
-        if (typeof d[method] === 'function') {
-          await d[method](val).catch(() => {});
-        } else {
-          await d.triggerCapabilityListener(cap, val).catch(() => {});
-        }
-      }
-    };
-
-    this.homey.flow.getActionCard('spa_set_filter')
-      .registerRunListener(runSpa('onoff.filter', 'setFilter'));
-
-    this.homey.flow.getActionCard('spa_set_heating')
-      .registerRunListener(runSpa('onoff.heating', 'setHeating'));
-
-    this.homey.flow.getActionCard('spa_set_airjet_low')
-      .registerRunListener(runSpa('onoff.airjet_low', 'setAirjetLow'));
-
-    this.homey.flow.getActionCard('spa_set_airjet_high')
-      .registerRunListener(runSpa('onoff.airjet_high', 'setAirjetHigh'));
-
-    this.homey.flow.getActionCard('spa_set_hydrojet')
-      .registerRunListener(runSpa('onoff.hydrojet', 'setHydrojet'));
-
-    // **** New driver-level spa action cards (device-specific) ****
-    const runDevice = (method) => async ({ device, onoff }) => {
-      const val = onoff === 'true';
-      return device[method](val);
-    };
-
-    this.homey.flow.getActionCard('spa_heating').registerRunListener(runDevice('setHeating'));
-    this.homey.flow.getActionCard('spa_filter').registerRunListener(runDevice('setFilter'));
-    this.homey.flow.getActionCard('spa_airjet_low').registerRunListener(runDevice('setAirjetLow'));
-    this.homey.flow.getActionCard('spa_airjet_high').registerRunListener(runDevice('setAirjetHigh'));
-    this.homey.flow.getActionCard('spa_hydrojet').registerRunListener(runDevice('setHydrojet'));
-
-    // Filter pump conditions — cover Connect devices (pump_onoff not present; use onoff.filter)
-    this.homey.flow.getConditionCard('filter_pump_is_on')
-      .registerRunListener(async ({ device }) => {
-        return !!(device?.getCapabilityValue('pump_onoff') ?? device?.getCapabilityValue('onoff.filter'));
-      });
-    this.homey.flow.getConditionCard('filter_pump_is_off')
-      .registerRunListener(async ({ device }) => {
-        return !(device?.getCapabilityValue('pump_onoff') ?? device?.getCapabilityValue('onoff.filter'));
-      });
-
-    // Filter pump actions — cover Connect devices via setFilterPump()
-    const fpAction = (turnOn) => async ({ device }) => {
-      if (!device || typeof device.setFilterPump !== 'function') return false;
-      return device.setFilterPump(turnOn);
-    };
-    this.homey.flow.getActionCard('filter_pump_turn_on').registerRunListener(fpAction(true));
-    this.homey.flow.getActionCard('filter_pump_turn_off').registerRunListener(fpAction(false));
-    this.homey.flow.getActionCard('filter_pump_toggle').registerRunListener(async ({ device }) => {
-      if (!device || typeof device.setFilterPump !== 'function') return false;
-      const cur = !!(device.getCapabilityValue('pump_onoff') ?? device.getCapabilityValue('onoff.filter'));
-      return device.setFilterPump(!cur);
-    });
+    // Flow card run listeners are registered centrally in the Lay-Z driver, which
+    // initialises last and whose listeners handle both Lay-Z and Connect devices.
   }
 
   async onRepair(session, device) {

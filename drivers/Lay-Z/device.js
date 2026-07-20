@@ -51,7 +51,7 @@ const MODEL_REGISTRY = [
   {
     id: 'Hydrojet_Pro',
     match: {
-      productNames: ['Hydrojet_Pro'],
+      productNames: ['Hydrojet_Pro', 'Hydrojet'],
       // Structural signature: Hydrojet exposes Tnow / Tset
       is: (attr) => typeof attr?.Tnow !== 'undefined' || typeof attr?.Tset !== 'undefined',
       priority: 10,
@@ -317,6 +317,10 @@ class SpaDevice extends Homey.Device {
     await this.enableCapability('measure_power', true);
     await this.enableCapability('measure_temperature', true);
     await this.enableCapability('target_temperature', true);
+    await this.setCapabilityOptions('target_temperature', {
+      units: { en: '°C', no: '°C', cs: '°C', nl: '°C', de: '°C', da: '°C', sv: '°C', it: '°C', fr: '°C', ru: '°C', pl: '°C' },
+      min: 20, max: 40, step: 1, decimals: 0,
+    });
     await this.enableCapability('bestway_temp_reached', true);
     await this.enableCapability('bestway_error_message', true);
     await this.enableCapability('alarm_generic', true);
@@ -404,11 +408,6 @@ class SpaDevice extends Homey.Device {
       // Always display in °C — convert Fahrenheit values from device if needed
       this._deviceUnit = n.unit; // remember for onCapabilityTargetTemperature
       const toC = (v) => (n.unit === 'F' && typeof v === 'number') ? Math.round((v - 32) * 5 / 9 * 10) / 10 : v;
-      const allLangs = (u) => ({ en: u, no: u, cs: u, nl: u, de: u, da: u, sv: u, it: u, fr: u, ru: u, pl: u });
-      await this.setCapabilityOptions('target_temperature', {
-        units: allLangs('°C'),
-        min: 20, max: 40, step: 1, decimals: 0,
-      });
 
       // Update common capabilities (read)
       await this.safeSetCapabilityValue('target_temperature', toC(n.tempSet));
@@ -480,14 +479,21 @@ class SpaDevice extends Homey.Device {
       const errorMsg = hasErrors ? n.errors.join(' | ') : '–';
       await this.safeSetCapabilityValue('bestway_error_message', errorMsg);
       await this.safeSetCapabilityValue('bestway_locked', n.locked ?? false);
-      await this.safeSetCapabilityValue('bestway_temp_reached', n.heatReached);
+      // Hysteresis: once reached, hold "reached" until temp drops ≥1°C (or 1.8°F) below target.
+      // Prevents oscillation when temperature hovers at the setpoint boundary.
+      const prevStable = this._prevTempReached;
+      const hysteresisBuffer = n.unit === 'F' ? 1.8 : 1.0;
+      const hysteresisActive = (prevStable === true)
+        && typeof n.tempNow === 'number' && typeof n.tempSet === 'number'
+        && n.tempNow >= n.tempSet - hysteresisBuffer;
+      const stableReached = n.heatReached || hysteresisActive;
 
-      // Rising-edge: fire spa_temp_reached trigger
-      if (n.heatReached && !this._prevTempReached) {
-        this.driver._triggerTempReached?.trigger(this, { temperature: n.tempNow ?? 0 })
+      await this.safeSetCapabilityValue('bestway_temp_reached', stableReached);
+      if (stableReached && !prevStable) {
+        this.driver._triggerTempReached?.trigger(this, { temperature: toC(n.tempNow ?? 0) })
           .catch(e => this.error('Trigger spa_temp_reached failed', e));
       }
-      this._prevTempReached = n.heatReached;
+      this._prevTempReached = stableReached;
 
       // Rising-edge: fire spa_error_triggered trigger
       if (hasErrors && !this._prevAlarmActive) {
@@ -637,7 +643,7 @@ class SpaDevice extends Homey.Device {
     }
 
     try {
-      const response = await axios({ method, url, data, headers, timeout: 10000 });
+      const response = await axios({ method, url, data, headers, timeout: 8000 });
 
       // Log response status and body
       try {

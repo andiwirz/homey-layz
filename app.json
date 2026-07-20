@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.utkikk.layz",
-  "version": "1.3.13",
+  "version": "1.3.14",
   "compatibility": ">=12.0.0",
   "sdk": 3,
   "platforms": [
@@ -90,6 +90,12 @@
   "support": "https://community.homey.app/t/app-pro-lay-z-control-your-bestway-spa-pool-filter-from-homey/155679",
   "bugs": {
     "url": "https://github.com/rtorkelsen/homey-layz/issues"
+  },
+  "changelog": {
+    "1.3.14": {
+      "en": "Fixed flow cards briefly showing as unavailable on every data refresh. Fixed flow card run listeners being registered twice (causing warnings and unstable behaviour). Fixed 'Hydrojet' product name not being recognised as HydroJet adapter (caused unnecessary capability changes on first poll). Fixed spa_temp_reached trigger firing repeatedly when temperature oscillates near the setpoint (added hysteresis). Fixed temperature value in spa_temp_reached trigger being in °F instead of °C for Fahrenheit devices.",
+      "de": "Behoben: Flow-Karten erschienen bei jedem Daten-Update kurz als nicht verfügbar. Behoben: Run-Listener wurden doppelt registriert (Warnungen und instabiles Verhalten). Behoben: Produktname 'Hydrojet' wurde nicht als HydroJet-Adapter erkannt (verursachte unnötige Capability-Änderungen beim ersten Poll). Behoben: spa_temp_reached-Trigger feuerte wiederholt, wenn die Temperatur am Sollwert oszillierte (Hysterese hinzugefügt). Behoben: Temperaturwert im spa_temp_reached-Trigger war bei Fahrenheit-Geräten in °F statt °C."
+    }
   },
   "flow": {
     "triggers": [
@@ -350,7 +356,16 @@
             "type": "string",
             "title": {
               "en": "Error message",
-              "de": "Fehlermeldung"
+              "de": "Fehlermeldung",
+              "no": "Feilmelding",
+              "cs": "Chybová zpráva",
+              "nl": "Foutmelding",
+              "da": "Fejlbesked",
+              "sv": "Felmeddelande",
+              "it": "Messaggio di errore",
+              "fr": "Message d'erreur",
+              "ru": "Сообщение об ошибке",
+              "pl": "Komunikat o błędzie"
             }
           }
         ]
@@ -359,11 +374,29 @@
         "id": "spa_error_triggered",
         "title": {
           "en": "Spa error occurred",
-          "de": "Spa-Fehler aufgetreten"
+          "de": "Spa-Fehler aufgetreten",
+          "no": "Spa-feil oppstod",
+          "cs": "Nastala chyba spa",
+          "nl": "Spa fout opgetreden",
+          "da": "Spa-fejl opstod",
+          "sv": "Spa-fel uppstod",
+          "it": "Si è verificato un errore spa",
+          "fr": "Erreur spa survenue",
+          "ru": "Произошла ошибка спа",
+          "pl": "Wystąpił błąd spa"
         },
         "titleFormatted": {
           "en": "[[device]] spa error occurred",
-          "de": "[[device]] Spa-Fehler aufgetreten"
+          "de": "[[device]] Spa-Fehler aufgetreten",
+          "no": "[[device]] spa-feil oppstod",
+          "cs": "[[device]] nastala chyba spa",
+          "nl": "[[device]] spa fout opgetreden",
+          "da": "[[device]] spa-fejl opstod",
+          "sv": "[[device]] spa-fel uppstod",
+          "it": "[[device]] si è verificato un errore spa",
+          "fr": "[[device]] erreur spa survenue",
+          "ru": "[[device]] произошла ошибка спа",
+          "pl": "[[device]] wystąpił błąd spa"
         },
         "args": [
           {
@@ -378,7 +411,16 @@
             "type": "string",
             "title": {
               "en": "Error message",
-              "de": "Fehlermeldung"
+              "de": "Fehlermeldung",
+              "no": "Feilmelding",
+              "cs": "Chybová zpráva",
+              "nl": "Foutmelding",
+              "da": "Fejlbesked",
+              "sv": "Felmeddelande",
+              "it": "Messaggio di errore",
+              "fr": "Message d'erreur",
+              "ru": "Сообщение об ошибке",
+              "pl": "Komunikat o błędzie"
             }
           }
         ]
@@ -387,11 +429,29 @@
         "id": "spa_temp_reached",
         "title": {
           "en": "Target temperature reached",
-          "de": "Zieltemperatur erreicht"
+          "de": "Zieltemperatur erreicht",
+          "no": "Måltemperatur nådd",
+          "cs": "Cílová teplota dosažena",
+          "nl": "Doeltemperatuur bereikt",
+          "da": "Måltemperatur nået",
+          "sv": "Måltemperatur uppnådd",
+          "it": "Temperatura target raggiunta",
+          "fr": "Température cible atteinte",
+          "ru": "Целевая температура достигнута",
+          "pl": "Osiągnięto temperaturę docelową"
         },
         "titleFormatted": {
           "en": "[[device]] target temperature reached",
-          "de": "[[device]] Zieltemperatur erreicht"
+          "de": "[[device]] Zieltemperatur erreicht",
+          "no": "[[device]] måltemperatur nådd",
+          "cs": "[[device]] cílová teplota dosažena",
+          "nl": "[[device]] doeltemperatuur bereikt",
+          "da": "[[device]] måltemperatur nået",
+          "sv": "[[device]] måltemperatur uppnådd",
+          "it": "[[device]] temperatura target raggiunta",
+          "fr": "[[device]] température cible atteinte",
+          "ru": "[[device]] целевая температура достигнута",
+          "pl": "[[device]] osiągnięto temperaturę docelową"
         },
         "args": [
           {
@@ -406,7 +466,16 @@
             "type": "number",
             "title": {
               "en": "Temperature",
-              "de": "Temperatur"
+              "de": "Temperatur",
+              "no": "Temperatur",
+              "cs": "Teplota",
+              "nl": "Temperatuur",
+              "da": "Temperatur",
+              "sv": "Temperatur",
+              "it": "Temperatura",
+              "fr": "Température",
+              "ru": "Температура",
+              "pl": "Temperatura"
             }
           }
         ]
@@ -561,17 +630,35 @@
         "id": "spa_airjet_active",
         "title": {
           "en": "AirJet is !{{active|not active}}",
-          "de": "AirJet ist !{{aktiv|nicht aktiv}}"
+          "de": "AirJet ist !{{aktiv|nicht aktiv}}",
+          "no": "AirJet er !{{aktiv|ikke aktiv}}",
+          "cs": "AirJet je !{{aktivní|neaktivní}}",
+          "nl": "AirJet is !{{actief|niet actief}}",
+          "da": "AirJet er !{{aktiv|ikke aktiv}}",
+          "sv": "AirJet är !{{aktiv|inte aktiv}}",
+          "it": "AirJet è !{{attivo|non attivo}}",
+          "fr": "AirJet est !{{actif|inactif}}",
+          "ru": "AirJet !{{активен|не активен}}",
+          "pl": "AirJet jest !{{aktywny|nieaktywny}}"
         },
         "titleFormatted": {
           "en": "[[device]] AirJet is !{{active|not active}}",
-          "de": "[[device]] AirJet ist !{{aktiv|nicht aktiv}}"
+          "de": "[[device]] AirJet ist !{{aktiv|nicht aktiv}}",
+          "no": "[[device]] AirJet er !{{aktiv|ikke aktiv}}",
+          "cs": "[[device]] AirJet je !{{aktivní|neaktivní}}",
+          "nl": "[[device]] AirJet is !{{actief|niet actief}}",
+          "da": "[[device]] AirJet er !{{aktiv|ikke aktiv}}",
+          "sv": "[[device]] AirJet är !{{aktiv|inte aktiv}}",
+          "it": "[[device]] AirJet è !{{attivo|non attivo}}",
+          "fr": "[[device]] AirJet est !{{actif|inactif}}",
+          "ru": "[[device]] AirJet !{{активен|не активен}}",
+          "pl": "[[device]] AirJet jest !{{aktywny|nieaktywny}}"
         },
         "args": [
           {
             "name": "device",
             "type": "device",
-            "filter": "capability=bestway_temp_reached"
+            "filter": "driver_id=Lay-Z|driver_id=lay-z-spa-connect"
           }
         ]
       },
@@ -579,11 +666,29 @@
         "id": "spa_error_active",
         "title": {
           "en": "Spa has !{{an error|no error}}",
-          "de": "Spa hat !{{einen Fehler|keinen Fehler}}"
+          "de": "Spa hat !{{einen Fehler|keinen Fehler}}",
+          "no": "Spa har !{{en feil|ingen feil}}",
+          "cs": "Spa !{{má chybu|nemá chybu}}",
+          "nl": "Spa heeft !{{een fout|geen fout}}",
+          "da": "Spa har !{{en fejl|ingen fejl}}",
+          "sv": "Spa har !{{ett fel|inga fel}}",
+          "it": "Spa ha !{{un errore|nessun errore}}",
+          "fr": "Spa a !{{une erreur|aucune erreur}}",
+          "ru": "Спа !{{имеет ошибку|не имеет ошибок}}",
+          "pl": "Spa ma !{{błąd|brak błędów}}"
         },
         "titleFormatted": {
           "en": "[[device]] spa has !{{an error|no error}}",
-          "de": "[[device]] Spa hat !{{einen Fehler|keinen Fehler}}"
+          "de": "[[device]] Spa hat !{{einen Fehler|keinen Fehler}}",
+          "no": "[[device]] spa har !{{en feil|ingen feil}}",
+          "cs": "[[device]] spa !{{má chybu|nemá chybu}}",
+          "nl": "[[device]] spa heeft !{{een fout|geen fout}}",
+          "da": "[[device]] spa har !{{en fejl|ingen fejl}}",
+          "sv": "[[device]] spa har !{{ett fel|inga fel}}",
+          "it": "[[device]] spa ha !{{un errore|nessun errore}}",
+          "fr": "[[device]] spa a !{{une erreur|aucune erreur}}",
+          "ru": "[[device]] спа !{{имеет ошибку|не имеет ошибок}}",
+          "pl": "[[device]] spa ma !{{błąd|brak błędów}}"
         },
         "args": [
           {
@@ -597,11 +702,29 @@
         "id": "spa_locked",
         "title": {
           "en": "Panel lock is !{{active|not active}}",
-          "de": "Tastensperre ist !{{aktiv|nicht aktiv}}"
+          "de": "Tastensperre ist !{{aktiv|nicht aktiv}}",
+          "no": "Panellås er !{{aktiv|ikke aktiv}}",
+          "cs": "Zámek panelu je !{{aktivní|neaktivní}}",
+          "nl": "Panelvergrendeling is !{{actief|niet actief}}",
+          "da": "Panellås er !{{aktiv|ikke aktiv}}",
+          "sv": "Panellås är !{{aktiv|inte aktiv}}",
+          "it": "Blocco pannello è !{{attivo|non attivo}}",
+          "fr": "Verrouillage du panneau est !{{actif|inactif}}",
+          "ru": "Блокировка панели !{{активна|не активна}}",
+          "pl": "Blokada panelu jest !{{aktywna|nieaktywna}}"
         },
         "titleFormatted": {
           "en": "[[device]] panel lock is !{{active|not active}}",
-          "de": "[[device]] Tastensperre ist !{{aktiv|nicht aktiv}}"
+          "de": "[[device]] Tastensperre ist !{{aktiv|nicht aktiv}}",
+          "no": "[[device]] panellås er !{{aktiv|ikke aktiv}}",
+          "cs": "[[device]] zámek panelu je !{{aktivní|neaktivní}}",
+          "nl": "[[device]] panelvergrendeling is !{{actief|niet actief}}",
+          "da": "[[device]] panellås er !{{aktiv|ikke aktiv}}",
+          "sv": "[[device]] panellås är !{{aktiv|inte aktiv}}",
+          "it": "[[device]] blocco pannello è !{{attivo|non attivo}}",
+          "fr": "[[device]] verrouillage du panneau est !{{actif|inactif}}",
+          "ru": "[[device]] блокировка панели !{{активна|не активна}}",
+          "pl": "[[device]] blokada panelu jest !{{aktywna|nieaktywna}}"
         },
         "args": [
           {
@@ -615,11 +738,29 @@
         "id": "spa_temp_above",
         "title": {
           "en": "Water temperature is !{{above|not above}}",
-          "de": "Wassertemperatur ist !{{über|nicht über}}"
+          "de": "Wassertemperatur ist !{{über|nicht über}}",
+          "no": "Vanntemperatur er !{{over|ikke over}}",
+          "cs": "Teplota vody je !{{nad|ne nad}}",
+          "nl": "Watertemperatuur is !{{boven|niet boven}}",
+          "da": "Vandtemperatur er !{{over|ikke over}}",
+          "sv": "Vattentemperatur är !{{över|inte över}}",
+          "it": "Temperatura dell'acqua è !{{sopra|non sopra}}",
+          "fr": "Température de l'eau est !{{au-dessus|pas au-dessus}}",
+          "ru": "Температура воды !{{выше|не выше}}",
+          "pl": "Temperatura wody jest !{{powyżej|nie powyżej}}"
         },
         "titleFormatted": {
           "en": "[[device]] water temperature is !{{above|not above}} [[temperature]]",
-          "de": "[[device]] Wassertemperatur ist !{{über|nicht über}} [[temperature]]"
+          "de": "[[device]] Wassertemperatur ist !{{über|nicht über}} [[temperature]]",
+          "no": "[[device]] vanntemperatur er !{{over|ikke over}} [[temperature]]",
+          "cs": "[[device]] teplota vody je !{{nad|ne nad}} [[temperature]]",
+          "nl": "[[device]] watertemperatuur is !{{boven|niet boven}} [[temperature]]",
+          "da": "[[device]] vandtemperatur er !{{over|ikke over}} [[temperature]]",
+          "sv": "[[device]] vattentemperatur är !{{över|inte över}} [[temperature]]",
+          "it": "[[device]] temperatura dell'acqua è !{{sopra|non sopra}} [[temperature]]",
+          "fr": "[[device]] température de l'eau est !{{au-dessus|pas au-dessus}} [[temperature]]",
+          "ru": "[[device]] температура воды !{{выше|не выше}} [[temperature]]",
+          "pl": "[[device]] temperatura wody jest !{{powyżej|nie powyżej}} [[temperature]]"
         },
         "args": [
           {
@@ -632,7 +773,16 @@
             "type": "number",
             "title": {
               "en": "Temperature",
-              "de": "Temperatur"
+              "de": "Temperatur",
+              "no": "Temperatur",
+              "cs": "Teplota",
+              "nl": "Temperatuur",
+              "da": "Temperatur",
+              "sv": "Temperatur",
+              "it": "Temperatura",
+              "fr": "Température",
+              "ru": "Температура",
+              "pl": "Temperatura"
             },
             "min": 0,
             "max": 50,
@@ -644,11 +794,29 @@
         "id": "spa_temp_below",
         "title": {
           "en": "Water temperature is !{{below|not below}}",
-          "de": "Wassertemperatur ist !{{unter|nicht unter}}"
+          "de": "Wassertemperatur ist !{{unter|nicht unter}}",
+          "no": "Vanntemperatur er !{{under|ikke under}}",
+          "cs": "Teplota vody je !{{pod|ne pod}}",
+          "nl": "Watertemperatuur is !{{onder|niet onder}}",
+          "da": "Vandtemperatur er !{{under|ikke under}}",
+          "sv": "Vattentemperatur är !{{under|inte under}}",
+          "it": "Temperatura dell'acqua è !{{sotto|non sotto}}",
+          "fr": "Température de l'eau est !{{en dessous|pas en dessous}}",
+          "ru": "Температура воды !{{ниже|не ниже}}",
+          "pl": "Temperatura wody jest !{{poniżej|nie poniżej}}"
         },
         "titleFormatted": {
           "en": "[[device]] water temperature is !{{below|not below}} [[temperature]]",
-          "de": "[[device]] Wassertemperatur ist !{{unter|nicht unter}} [[temperature]]"
+          "de": "[[device]] Wassertemperatur ist !{{unter|nicht unter}} [[temperature]]",
+          "no": "[[device]] vanntemperatur er !{{under|ikke under}} [[temperature]]",
+          "cs": "[[device]] teplota vody je !{{pod|ne pod}} [[temperature]]",
+          "nl": "[[device]] watertemperatuur is !{{onder|niet onder}} [[temperature]]",
+          "da": "[[device]] vandtemperatur er !{{under|ikke under}} [[temperature]]",
+          "sv": "[[device]] vattentemperatur är !{{under|inte under}} [[temperature]]",
+          "it": "[[device]] temperatura dell'acqua è !{{sotto|non sotto}} [[temperature]]",
+          "fr": "[[device]] température de l'eau est !{{en dessous|pas en dessous}} [[temperature]]",
+          "ru": "[[device]] температура воды !{{ниже|не ниже}} [[temperature]]",
+          "pl": "[[device]] temperatura wody jest !{{poniżej|nie poniżej}} [[temperature]]"
         },
         "args": [
           {
@@ -661,7 +829,16 @@
             "type": "number",
             "title": {
               "en": "Temperature",
-              "de": "Temperatur"
+              "de": "Temperatur",
+              "no": "Temperatur",
+              "cs": "Teplota",
+              "nl": "Temperatuur",
+              "da": "Temperatur",
+              "sv": "Temperatur",
+              "it": "Temperatura",
+              "fr": "Température",
+              "ru": "Температура",
+              "pl": "Temperatura"
             },
             "min": 0,
             "max": 50,
@@ -673,11 +850,29 @@
         "id": "spa_temp_reached_condition",
         "title": {
           "en": "Target temperature is !{{reached|not reached}}",
-          "de": "Zieltemperatur ist !{{erreicht|nicht erreicht}}"
+          "de": "Zieltemperatur ist !{{erreicht|nicht erreicht}}",
+          "no": "Måltemperatur er !{{nådd|ikke nådd}}",
+          "cs": "Cílová teplota je !{{dosažena|nedosažena}}",
+          "nl": "Doeltemperatuur is !{{bereikt|niet bereikt}}",
+          "da": "Måltemperatur er !{{nået|ikke nået}}",
+          "sv": "Måltemperatur är !{{uppnådd|inte uppnådd}}",
+          "it": "Temperatura target è !{{raggiunta|non raggiunta}}",
+          "fr": "Température cible est !{{atteinte|non atteinte}}",
+          "ru": "Целевая температура !{{достигнута|не достигнута}}",
+          "pl": "Temperatura docelowa jest !{{osiągnięta|nie osiągnięta}}"
         },
         "titleFormatted": {
           "en": "[[device]] target temperature is !{{reached|not reached}}",
-          "de": "[[device]] Zieltemperatur ist !{{erreicht|nicht erreicht}}"
+          "de": "[[device]] Zieltemperatur ist !{{erreicht|nicht erreicht}}",
+          "no": "[[device]] måltemperatur er !{{nådd|ikke nådd}}",
+          "cs": "[[device]] cílová teplota je !{{dosažena|nedosažena}}",
+          "nl": "[[device]] doeltemperatuur is !{{bereikt|niet bereikt}}",
+          "da": "[[device]] måltemperatur er !{{nået|ikke nået}}",
+          "sv": "[[device]] måltemperatur är !{{uppnådd|inte uppnådd}}",
+          "it": "[[device]] temperatura target è !{{raggiunta|non raggiunta}}",
+          "fr": "[[device]] température cible est !{{atteinte|non atteinte}}",
+          "ru": "[[device]] целевая температура !{{достигнута|не достигнута}}",
+          "pl": "[[device]] temperatura docelowa jest !{{osiągnięta|nie osiągnięta}}"
         },
         "args": [
           {
@@ -762,11 +957,29 @@
         "id": "spa_airjet_high",
         "title": {
           "en": "Turn AirJet High on or off",
-          "de": "AirJet High ein- oder ausschalten"
+          "de": "AirJet High ein- oder ausschalten",
+          "no": "Slå AirJet High av eller på",
+          "cs": "Zapnout nebo vypnout AirJet High",
+          "nl": "AirJet High aan of uit zetten",
+          "da": "Tænd eller sluk AirJet High",
+          "sv": "Slå AirJet High av eller på",
+          "it": "Accendi o spegni AirJet High",
+          "fr": "Allumer ou éteindre l'AirJet High",
+          "ru": "Включить или выключить AirJet High",
+          "pl": "Włącz lub wyłącz AirJet High"
         },
         "titleFormatted": {
           "en": "Turn AirJet High [[onoff]]",
-          "de": "AirJet High [[onoff]] schalten"
+          "de": "AirJet High [[onoff]] schalten",
+          "no": "Slå AirJet High [[onoff]]",
+          "cs": "AirJet High [[onoff]]",
+          "nl": "AirJet High [[onoff]]",
+          "da": "Slå AirJet High [[onoff]]",
+          "sv": "Slå AirJet High [[onoff]]",
+          "it": "AirJet High [[onoff]]",
+          "fr": "AirJet High [[onoff]]",
+          "ru": "AirJet High [[onoff]]",
+          "pl": "AirJet High [[onoff]]"
         },
         "args": [
           {
@@ -779,21 +992,48 @@
             "type": "dropdown",
             "title": {
               "en": "State",
-              "de": "Zustand"
+              "de": "Zustand",
+              "no": "Tilstand",
+              "cs": "Stav",
+              "nl": "Toestand",
+              "da": "Tilstand",
+              "sv": "Tillstånd",
+              "it": "Stato",
+              "fr": "État",
+              "ru": "Состояние",
+              "pl": "Stan"
             },
             "values": [
               {
                 "id": "true",
                 "label": {
                   "en": "on",
-                  "de": "ein"
+                  "de": "ein",
+                  "no": "på",
+                  "cs": "zapnout",
+                  "nl": "aan",
+                  "da": "til",
+                  "sv": "på",
+                  "it": "acceso",
+                  "fr": "allumé",
+                  "ru": "вкл",
+                  "pl": "wł"
                 }
               },
               {
                 "id": "false",
                 "label": {
                   "en": "off",
-                  "de": "aus"
+                  "de": "aus",
+                  "no": "av",
+                  "cs": "vypnout",
+                  "nl": "uit",
+                  "da": "fra",
+                  "sv": "av",
+                  "it": "spento",
+                  "fr": "éteint",
+                  "ru": "выкл",
+                  "pl": "wył"
                 }
               }
             ]
@@ -804,11 +1044,29 @@
         "id": "spa_airjet_low",
         "title": {
           "en": "Turn AirJet Low on or off",
-          "de": "AirJet Low ein- oder ausschalten"
+          "de": "AirJet Low ein- oder ausschalten",
+          "no": "Slå AirJet Low av eller på",
+          "cs": "Zapnout nebo vypnout AirJet Low",
+          "nl": "AirJet Low aan of uit zetten",
+          "da": "Tænd eller sluk AirJet Low",
+          "sv": "Slå AirJet Low av eller på",
+          "it": "Accendi o spegni AirJet Low",
+          "fr": "Allumer ou éteindre l'AirJet Low",
+          "ru": "Включить или выключить AirJet Low",
+          "pl": "Włącz lub wyłącz AirJet Low"
         },
         "titleFormatted": {
           "en": "Turn AirJet Low [[onoff]]",
-          "de": "AirJet Low [[onoff]] schalten"
+          "de": "AirJet Low [[onoff]] schalten",
+          "no": "Slå AirJet Low [[onoff]]",
+          "cs": "AirJet Low [[onoff]]",
+          "nl": "AirJet Low [[onoff]]",
+          "da": "Slå AirJet Low [[onoff]]",
+          "sv": "Slå AirJet Low [[onoff]]",
+          "it": "AirJet Low [[onoff]]",
+          "fr": "AirJet Low [[onoff]]",
+          "ru": "AirJet Low [[onoff]]",
+          "pl": "AirJet Low [[onoff]]"
         },
         "args": [
           {
@@ -821,21 +1079,48 @@
             "type": "dropdown",
             "title": {
               "en": "State",
-              "de": "Zustand"
+              "de": "Zustand",
+              "no": "Tilstand",
+              "cs": "Stav",
+              "nl": "Toestand",
+              "da": "Tilstand",
+              "sv": "Tillstånd",
+              "it": "Stato",
+              "fr": "État",
+              "ru": "Состояние",
+              "pl": "Stan"
             },
             "values": [
               {
                 "id": "true",
                 "label": {
                   "en": "on",
-                  "de": "ein"
+                  "de": "ein",
+                  "no": "på",
+                  "cs": "zapnout",
+                  "nl": "aan",
+                  "da": "til",
+                  "sv": "på",
+                  "it": "acceso",
+                  "fr": "allumé",
+                  "ru": "вкл",
+                  "pl": "wł"
                 }
               },
               {
                 "id": "false",
                 "label": {
                   "en": "off",
-                  "de": "aus"
+                  "de": "aus",
+                  "no": "av",
+                  "cs": "vypnout",
+                  "nl": "uit",
+                  "da": "fra",
+                  "sv": "av",
+                  "it": "spento",
+                  "fr": "éteint",
+                  "ru": "выкл",
+                  "pl": "wył"
                 }
               }
             ]
@@ -846,11 +1131,29 @@
         "id": "spa_filter",
         "title": {
           "en": "Turn filter on or off",
-          "de": "Filter ein- oder ausschalten"
+          "de": "Filter ein- oder ausschalten",
+          "no": "Slå filter av eller på",
+          "cs": "Zapnout nebo vypnout filtr",
+          "nl": "Filter aan of uit zetten",
+          "da": "Tænd eller sluk for filteret",
+          "sv": "Slå på eller av filtret",
+          "it": "Accendi o spegni il filtro",
+          "fr": "Allumer ou éteindre le filtre",
+          "ru": "Включить или выключить фильтр",
+          "pl": "Włącz lub wyłącz filtr"
         },
         "titleFormatted": {
           "en": "Turn filter [[onoff]]",
-          "de": "Filter [[onoff]] schalten"
+          "de": "Filter [[onoff]] schalten",
+          "no": "Slå filter [[onoff]]",
+          "cs": "Filtr [[onoff]]",
+          "nl": "Filter [[onoff]]",
+          "da": "Slå filteret [[onoff]]",
+          "sv": "Slå filtret [[onoff]]",
+          "it": "Filtro [[onoff]]",
+          "fr": "Filtre [[onoff]]",
+          "ru": "Фильтр [[onoff]]",
+          "pl": "Filtr [[onoff]]"
         },
         "args": [
           {
@@ -863,21 +1166,48 @@
             "type": "dropdown",
             "title": {
               "en": "State",
-              "de": "Zustand"
+              "de": "Zustand",
+              "no": "Tilstand",
+              "cs": "Stav",
+              "nl": "Toestand",
+              "da": "Tilstand",
+              "sv": "Tillstånd",
+              "it": "Stato",
+              "fr": "État",
+              "ru": "Состояние",
+              "pl": "Stan"
             },
             "values": [
               {
                 "id": "true",
                 "label": {
                   "en": "on",
-                  "de": "ein"
+                  "de": "ein",
+                  "no": "på",
+                  "cs": "zapnout",
+                  "nl": "aan",
+                  "da": "til",
+                  "sv": "på",
+                  "it": "acceso",
+                  "fr": "allumé",
+                  "ru": "вкл",
+                  "pl": "wł"
                 }
               },
               {
                 "id": "false",
                 "label": {
                   "en": "off",
-                  "de": "aus"
+                  "de": "aus",
+                  "no": "av",
+                  "cs": "vypnout",
+                  "nl": "uit",
+                  "da": "fra",
+                  "sv": "av",
+                  "it": "spento",
+                  "fr": "éteint",
+                  "ru": "выкл",
+                  "pl": "wył"
                 }
               }
             ]
@@ -888,11 +1218,29 @@
         "id": "spa_heating",
         "title": {
           "en": "Turn heating on or off",
-          "de": "Heizung ein- oder ausschalten"
+          "de": "Heizung ein- oder ausschalten",
+          "no": "Slå oppvarming av eller på",
+          "cs": "Zapnout nebo vypnout topení",
+          "nl": "Verwarming aan of uit zetten",
+          "da": "Tænd eller sluk for varmen",
+          "sv": "Slå på eller av uppvärmning",
+          "it": "Accendi o spegni il riscaldamento",
+          "fr": "Allumer ou éteindre le chauffage",
+          "ru": "Включить или выключить нагрев",
+          "pl": "Włącz lub wyłącz ogrzewanie"
         },
         "titleFormatted": {
           "en": "Turn heating [[onoff]]",
-          "de": "Heizung [[onoff]] schalten"
+          "de": "Heizung [[onoff]] schalten",
+          "no": "Slå oppvarming [[onoff]]",
+          "cs": "Topení [[onoff]]",
+          "nl": "Verwarming [[onoff]]",
+          "da": "Slå varmen [[onoff]]",
+          "sv": "Slå uppvärmning [[onoff]]",
+          "it": "Riscaldamento [[onoff]]",
+          "fr": "Chauffage [[onoff]]",
+          "ru": "Нагрев [[onoff]]",
+          "pl": "Ogrzewanie [[onoff]]"
         },
         "args": [
           {
@@ -905,21 +1253,48 @@
             "type": "dropdown",
             "title": {
               "en": "State",
-              "de": "Zustand"
+              "de": "Zustand",
+              "no": "Tilstand",
+              "cs": "Stav",
+              "nl": "Toestand",
+              "da": "Tilstand",
+              "sv": "Tillstånd",
+              "it": "Stato",
+              "fr": "État",
+              "ru": "Состояние",
+              "pl": "Stan"
             },
             "values": [
               {
                 "id": "true",
                 "label": {
                   "en": "on",
-                  "de": "ein"
+                  "de": "ein",
+                  "no": "på",
+                  "cs": "zapnout",
+                  "nl": "aan",
+                  "da": "til",
+                  "sv": "på",
+                  "it": "acceso",
+                  "fr": "allumé",
+                  "ru": "вкл",
+                  "pl": "wł"
                 }
               },
               {
                 "id": "false",
                 "label": {
                   "en": "off",
-                  "de": "aus"
+                  "de": "aus",
+                  "no": "av",
+                  "cs": "vypnout",
+                  "nl": "uit",
+                  "da": "fra",
+                  "sv": "av",
+                  "it": "spento",
+                  "fr": "éteint",
+                  "ru": "выкл",
+                  "pl": "wył"
                 }
               }
             ]
@@ -930,15 +1305,42 @@
         "id": "spa_hydrojet",
         "title": {
           "en": "Turn HydroJet on or off",
-          "de": "HydroJet ein- oder ausschalten"
+          "de": "HydroJet ein- oder ausschalten",
+          "no": "Slå HydroJet av eller på",
+          "cs": "Zapnout nebo vypnout HydroJet",
+          "nl": "HydroJet aan of uit zetten",
+          "da": "Tænd eller sluk HydroJet",
+          "sv": "Slå HydroJet av eller på",
+          "it": "Accendi o spegni HydroJet",
+          "fr": "Allumer ou éteindre le HydroJet",
+          "ru": "Включить или выключить HydroJet",
+          "pl": "Włącz lub wyłącz HydroJet"
         },
         "titleFormatted": {
           "en": "Turn HydroJet [[onoff]]",
-          "de": "HydroJet [[onoff]] schalten"
+          "de": "HydroJet [[onoff]] schalten",
+          "no": "Slå HydroJet [[onoff]]",
+          "cs": "HydroJet [[onoff]]",
+          "nl": "HydroJet [[onoff]]",
+          "da": "Slå HydroJet [[onoff]]",
+          "sv": "Slå HydroJet [[onoff]]",
+          "it": "HydroJet [[onoff]]",
+          "fr": "HydroJet [[onoff]]",
+          "ru": "HydroJet [[onoff]]",
+          "pl": "HydroJet [[onoff]]"
         },
         "hint": {
           "en": "Only available on HydroJet spa models.",
-          "de": "Nur für HydroJet-Spa-Modelle verfügbar."
+          "de": "Nur für HydroJet-Spa-Modelle verfügbar.",
+          "no": "Kun tilgjengelig på HydroJet-spa-modeller.",
+          "cs": "Dostupné pouze pro modely spa HydroJet.",
+          "nl": "Alleen beschikbaar op HydroJet spa-modellen.",
+          "da": "Kun tilgængelig på HydroJet spa-modeller.",
+          "sv": "Endast tillgänglig på HydroJet spa-modeller.",
+          "it": "Disponibile solo sui modelli spa HydroJet.",
+          "fr": "Disponible uniquement sur les modèles de spa HydroJet.",
+          "ru": "Доступно только на моделях спа HydroJet.",
+          "pl": "Dostępne tylko na modelach spa HydroJet."
         },
         "args": [
           {
@@ -951,21 +1353,48 @@
             "type": "dropdown",
             "title": {
               "en": "State",
-              "de": "Zustand"
+              "de": "Zustand",
+              "no": "Tilstand",
+              "cs": "Stav",
+              "nl": "Toestand",
+              "da": "Tilstand",
+              "sv": "Tillstånd",
+              "it": "Stato",
+              "fr": "État",
+              "ru": "Состояние",
+              "pl": "Stan"
             },
             "values": [
               {
                 "id": "true",
                 "label": {
                   "en": "on",
-                  "de": "ein"
+                  "de": "ein",
+                  "no": "på",
+                  "cs": "zapnout",
+                  "nl": "aan",
+                  "da": "til",
+                  "sv": "på",
+                  "it": "acceso",
+                  "fr": "allumé",
+                  "ru": "вкл",
+                  "pl": "wł"
                 }
               },
               {
                 "id": "false",
                 "label": {
                   "en": "off",
-                  "de": "aus"
+                  "de": "aus",
+                  "no": "av",
+                  "cs": "vypnout",
+                  "nl": "uit",
+                  "da": "fra",
+                  "sv": "av",
+                  "it": "spento",
+                  "fr": "éteint",
+                  "ru": "выкл",
+                  "pl": "wył"
                 }
               }
             ]

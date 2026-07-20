@@ -42,7 +42,9 @@ class SpaDriver extends Homey.Driver {
     this.homey.flow.getConditionCard('spa_airjet_active')
       .registerRunListener((args) => {
         const d = args.device;
-        return d.getCapabilityValue('airjet_low') === true ||
+        return d.getCapabilityValue('onoff.airjet_low') === true ||
+               d.getCapabilityValue('onoff.airjet_high') === true ||
+               d.getCapabilityValue('airjet_low') === true ||
                d.getCapabilityValue('airjet_high') === true ||
                d.getCapabilityValue('msg_onoff') === true;
       });
